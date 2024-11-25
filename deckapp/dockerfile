@@ -1,7 +1,7 @@
 FROM node:17
 WORKDIR /app
-COPY linuxapp/package*.json ./
+COPY deckapp/package*.json ./
 RUN npm install
-COPY linuxapp/ ./
+COPY deckapp/ ./
 EXPOSE 3000
 CMD ["npm", "start"]
