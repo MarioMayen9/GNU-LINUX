@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                git credentialsId: 'mariomayen9', url: 'https://github.com/MarioMayen9/GNU-LINUX.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build('mariomayen9/linuxapp:v2', '-f linux-app/dockerfile .')
+                }
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                sh 'docker run --rm mariomayen9/linuxapp:v2 npm test -- --watchAll=false'
+            }
+        }
+        stage('Deploy to DigitalOcean') {
+            steps {
+                script {
+                echo 'Autenticando en Docker Hub...'
+                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
+                echo 'Subiendo imagen a Docker Hub...'
+                docker.image('mariomayen9/linuxapp:v2').push('v2')
+                echo 'Imagen subida correctamente.'
+            }
+
+                echo 'Deteniendo y eliminando contenedor anterior (si existe)...'
+                sh '''
+                # Verificar si ya hay un contenedor corriendo con el puerto 3002
+                CONTAINER_ID=$(docker ps -q -f "publish=3002")
+                if [ -n "$CONTAINER_ID" ]; then
+                    echo "Deteniendo el contenedor con puerto 3002..."
+                    docker stop $CONTAINER_ID
+                    docker rm $CONTAINER_ID
+                fi
+                '''
+            
+                echo 'Descargando e iniciando contenedor desde Docker Hub...'
+                sh 'docker pull mariomayen9/linuxapp:v2'
+                sh 'docker run -d -p 3002:3000 mariomayen9/linuxapp:v2'
+                echo 'Contenedor desplegado correctamente.'
+                }
+            }
+        }
+
+    }
+}
