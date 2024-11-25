@@ -1,7 +1,7 @@
 FROM node:17
 WORKDIR /app
-COPY package*.json ./
+COPY linuxapp/package*.json ./
 RUN npm install
-COPY . .
+COPY linuxapp/ ./
 EXPOSE 3000
 CMD ["npm", "start"]
