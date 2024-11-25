@@ -10,7 +10,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build('mariomayen9/linuxapp:v1', '-f linuxapp/dockerfile .')
+                    docker.build('mariomayen9/linuxapp:v1', '-f deckapp/dockerfile .')
                 }
             }
         }
