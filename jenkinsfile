@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone repository') {
             steps {
-                git branch: 'main', git credentialsId: 'github_credentials', url: 'https://github.com/MarioMayen9/GNU-LINUX.git'
+                git branch: 'main', git credentialsId: 'github-credentials', url: 'https://github.com/MarioMayen9/GNU-LINUX.git'
             }
         }
         stage('Build Docker Image') {
