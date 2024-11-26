@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="title">Yu-Gi-Oh Deck</h1>
+      <h1 className="title">Yu-Gi-Oh Deck V2 </h1>
       <div className="card-container">
         {cards.map((card, index) => (
           <div
