@@ -8,5 +8,5 @@ test('renders all cards', () => {
   
   // Verifica que las imágenes de las cartas se rendericen
   const images = screen.getAllByRole('img');
-  expect(images.length).toBeGreaterThanOrEqual(1); // Ajusta el valor según la cantidad de cartas que esperas
+  expect(images.length).toBeGreaterThanOrEqual(6); // Ajusta el valor según la cantidad de cartas que esperas
 });
